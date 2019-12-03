@@ -4,8 +4,7 @@
 
 | 版本号        | 详情         | 备注  |
 | ------------- |:-------------:| -----:|
-| 1.0.0     | php55 |  基础版本 |
-| 1.0.3     | php55 |  添加mycrypt |
+| 1.0.1     | php55 |  基础版本 |
 
 ## 阿里云自动构建过程
 
@@ -31,4 +30,4 @@ git push origin :refs/tags/release-v1.0.0
 
 ### 镜像地址
 
-- registry.cn-shenzhen.aliyuncs.com/canbefree/docker-php55:1.0.1
+- registry.cn-shenzhen.aliyuncs.com/canbefree/docker-php7:1.0.1
