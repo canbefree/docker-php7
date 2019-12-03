@@ -11,19 +11,6 @@ RUN curl -O https://getcomposer.org/composer.phar \
     && mv composer.phar /usr/bin/composer \
     && composer config -g repo.packagist composer https://packagist.laravel-china.org
 
-#swoole 线上安装 
-RUN apt-get install git -y \
-    &&  git clone https://gitee.com/swoole/swoole.git swoole \
-    && apt-get install libssl-dev -y \
-    && cd swoole \
-    && phpize \
-    && ./configure --enable-openssl \
-    && make \
-    && make install \
-    && cd .. \
-    && docker-php-ext-enable swoole \
-    && rm -rf swoole
-
 # xdebug 安装 
 RUN git clone https://github.com/xdebug/xdebug \
     && cd xdebug \
