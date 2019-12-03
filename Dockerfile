@@ -5,6 +5,8 @@ LABEL maintainer xieyutian "xieyutianhn@gmail.com"
 #软件源获取
 RUN apt-get update 
 
+RUN apt-get install git libpng-dev libfreetype6-dev  libmcrypt-dev -y
+
 #composer 安装
 RUN curl -O https://getcomposer.org/composer.phar \
     && chmod +x composer.phar \
