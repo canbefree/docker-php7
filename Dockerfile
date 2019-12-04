@@ -22,7 +22,7 @@ RUN git clone https://github.com/xdebug/xdebug \
     && rm -rf xdebug
 
 # 开启 mysqli 
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqli pdo_mysql
 
 # 以root运行并强制前端运行
 CMD php-fpm -RF
