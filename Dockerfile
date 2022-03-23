@@ -1,28 +1,42 @@
-FROM php:7.3-fpm
+FROM ubuntu:21.10
 
 LABEL maintainer xieyutian "xieyutianhn@gmail.com"
 
-#软件源获取
-RUN apt-get update 
+ARG NODE_VERSION=16
 
-RUN apt-get install git libpng-dev libfreetype6-dev  libmcrypt-dev zip unzip -y
+ENV DEBIAN_FRONTEND noninteractive
+ENV TZ=UTC
 
-#composer 安装
-RUN curl -O https://getcomposer.org/composer.phar \
-    && chmod +x composer.phar \
-    && mv composer.phar /usr/bin/composer \
-    && composer config -g repo.packagist composer https://packagist.laravel-china.org
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# xdebug 安装 
-RUN git clone https://github.com/xdebug/xdebug \
-    && cd xdebug \
-    && ./rebuild.sh \
-    && docker-php-ext-enable xdebug \
-    && cd ..\
-    && rm -rf xdebug
+RUN apt-get update \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 \
+    && mkdir -p ~/.gnupg \
+    && chmod 600 ~/.gnupg \
+    && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
+    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E5267A6C \
+    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C300EE8C \
+    && echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu impish main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
+    && apt-get update \
+    && apt-get install -y php7.4-cli php7.4-dev \
+       php7.4-pgsql php7.4-sqlite3 php7.4-gd \
+       php7.4-curl php7.4-memcached \
+       php7.4-imap php7.4-mysql php7.4-mbstring \
+       php7.4-xml php7.4-zip php7.4-bcmath php7.4-soap \
+       php7.4-intl php7.4-readline php7.4-pcov \
+       php7.4-msgpack php7.4-igbinary php7.4-ldap \
+       php7.4-redis php7.4-xdebug 
 
-# 开启 mysqli 
-RUN docker-php-ext-install mysqli pdo_mysql
-
-# 以root运行并强制前端运行
-CMD php-fpm -RF
+RUN  php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
+    && curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
+    && apt-get update \
+    && apt-get install -y yarn \
+    && apt-get install -y mysql-client \
+    && apt-get install -y postgresql-client \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
