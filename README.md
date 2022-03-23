@@ -2,10 +2,9 @@
 
 ## 版本详情
 
-| 版本号 | 详情 |         备注 |
-| ------ | :--: | -----------: |
-| 1.0.1  | php7 |     基础版本 |
-| 1.0.8  | php7 | 加速构建过程 |
+| 版本号 |  详情  |         备注 |
+| ------ | :----: | -----------: |
+| 1.0.0  | php7.4 | 加速构建过程 |
 
 ## 阿里云自动构建过程
 
@@ -31,4 +30,4 @@ git push origin :refs/tags/release-v1.0.0
 
 ### 镜像地址
 
-- registry.cn-shenzhen.aliyuncs.com/canbefree/docker-php7:1.0.1
+- registry.cn-shenzhen.aliyuncs.com/canbefree/docker-php7:1.0.0
